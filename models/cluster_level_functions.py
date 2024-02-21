@@ -45,26 +45,3 @@ def update_shelve(df: pd.DataFrame, path: str) -> None:
                 network_pair = NetworkPair(row['True_count']+row['False_count'], row['True_count'], index)
                 db[index] = network_pair
         db.close()
-
-def obtain_categorical_pattern(df):
-    # Calculate the pattern of features ['service','proto','conn_state','history'] in a dataframe
-    
-    categorical_features = ['service','proto','conn_state','history']
-    pattern = []
-    for column in categorical_features:
-        proportions = df[column].value_counts(normalize=True)
-        pattern.append(list(zip(proportions.index, proportions.values)))
-    flattened_pattern = [(item[0], item[1]) for sublist in pattern for item in sublist]
-    series_pattern = pd.Series(dict(flattened_pattern))
-    return series_pattern
-
-def evaluate_categorical_similarity(s1, s2):
-    all_indices = s1.index.union(s2.index)
-    s1 = s1.reindex(all_indices, fill_value=0)
-    s2 = s2.reindex(all_indices, fill_value=0)
-    sim = cosine_similarity(s1.values.reshape(1, -1), s2.values.reshape(1, -1))
-    return sim
-
-if __name__ == "__main__":
-    train2 = pd.read_parquet("E:\\Group2Networked_AI_Systems_Project\\Data_sets\\train_batch\\train_batch1.parquet")
-    print(obtain_categorical_pattern(train2))

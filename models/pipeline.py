@@ -61,10 +61,11 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
 from sklearn.linear_model import RidgeClassifier
-from cluster_level_functions import obtain_categorical_pattern, evaluate_categorical_similarity
+from similary_calculation import obtain_categorical_pattern, evaluate_categorical_similarity
 import uuid
 import pickle
-import matplotlib.pyplot as plt
+from pipeline_metric_manage import retrieve_by_hthres, retrieve_by_lthres, retrieve_by_pid, retrieve_table_name
+from schedule import schedule
 
 class Pipeline_info:
     def __init__(self, id: str, pattern: pd.Series, accuracy: float, param: dict, pipeline: Pipeline) -> None:
@@ -325,8 +326,10 @@ def compare_similarity_accuracy(path: str, pipeline_info: Pipeline_info):
     return accuracy, similarity
 
 if __name__ == "__main__":
+    test1 = pd.read_parquet('E:\\Group2Networked_AI_Systems_Project\\Data_sets\\test_set\\traffic_0.parquet')
+    print(schedule(test1))
     #fit_gb_pipeline("E:\\Group2Networked_AI_Systems_Project\\Data_sets\\train_batch\\train_batch247.parquet")
-#"""
+"""
     my_pipeline_info = load_pipeline("E:\\Group2Networked_AI_Systems_Project\\pipelines\\gb_583a0552-b447-4794-bd88-ef1a81d77a96.pkl")
     try:
         a_lst, s_lst = [], []
