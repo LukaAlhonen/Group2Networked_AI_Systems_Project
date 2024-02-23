@@ -326,8 +326,10 @@ def compare_similarity_accuracy(path: str, pipeline_info: Pipeline_info):
     return accuracy, similarity
 
 if __name__ == "__main__":
-    test1 = pd.read_parquet('E:\\Group2Networked_AI_Systems_Project\\Data_sets\\test_set\\traffic_0.parquet')
-    print(schedule(test1))
+    df = retrieve_by_hthres()
+    print(df.head(2))
+    #test1 = pd.read_parquet('E:\\Group2Networked_AI_Systems_Project\\Data_sets\\test_set\\traffic_0.parquet')
+    #print(schedule(test1))
     #fit_gb_pipeline("E:\\Group2Networked_AI_Systems_Project\\Data_sets\\train_batch\\train_batch247.parquet")
 """
     my_pipeline_info = load_pipeline("E:\\Group2Networked_AI_Systems_Project\\pipelines\\gb_583a0552-b447-4794-bd88-ef1a81d77a96.pkl")
