@@ -47,9 +47,8 @@ if __name__ == "__main__":
     s.bind(('localhost', 8001))
     s.listen(5)
 
-    while True:
-        c, addr = s.accept()
-        print(f'Connected to {addr}')
-        c.send(serialized_data)
-        c.close()
+    c, addr = s.accept()
+    print(f'Connected to {addr}')
+    c.send(serialized_data)
+    c.close()
     
