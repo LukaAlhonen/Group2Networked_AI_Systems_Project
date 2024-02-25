@@ -5,6 +5,7 @@ import sys
 from schedule import schedule, task_creation
 import tkinter as tk
 import pandas as pd
+import socket
 
 if __name__ == "__main__":
     # Path of test file should be transferred by arguments in sys.argv
@@ -36,10 +37,19 @@ if __name__ == "__main__":
         sys.exit(-1)
 
     serialized_data = task_creation(pids, df)
-""" Ignore the following code, as they are generated for testing the worker
-    with open("data.pkl", "wb") as f:
-        f.write(serialized_data)
-"""
+# Ignore the following code, as they are generated for testing the worker
+#    with open("data.pkl", "wb") as f:
+#        f.write(serialized_data)
 
     # Socket Programming part - Transfer serialized_data from Root to Worker
+
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.bind(('localhost', 8001))
+    s.listen(5)
+
+    while True:
+        c, addr = s.accept()
+        print(f'Connected to {addr}')
+        c.send(serialized_data)
+        c.close()
     

@@ -3,6 +3,7 @@ Enter point for the worker.
 """
 
 import pickle
+import socket
 from task import task_process, task_analysis
 from pipeline import Pipeline
 from pipeline import Pipeline_info, get_lg10_for_duration, minmax_scaling_for_missing_bytes, \
@@ -13,8 +14,19 @@ if __name__ == "__main__":
     # Socket Programming part, receive serialized_data from Root
     #   ....
     #   serialized_data = Socket.receive()
-    with open("E:\\Group2Networked_AI_Systems_Project\\worker\\data.pkl", "rb") as f:
-        serialized_data = f.read()
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect(('localhost', 8001))
+    chunks = []
+    while True:
+        chunk = s.recv(1024)
+        if not chunk:
+            break
+        chunks.append(chunk)
+    serialized_data = b''.join(chunks)
+    s.close()
+
+    # with open("E:\\Group2Networked_AI_Systems_Project\\worker\\data.pkl", "rb") as f:
+    #     serialized_data = f.read()
     deserialized_data = pickle.loads(serialized_data)
     print(deserialized_data)
     pred, batch = task_process(deserialized_data)

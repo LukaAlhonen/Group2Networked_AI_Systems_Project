@@ -5,12 +5,12 @@ def task_deserialize(serialized_data):
     task = pickle.loads(serialized_data)
     return task
 
-def task_process(task, path='E:\\Group2Networked_AI_Systems_Project\\worker\\pipelines'):
+def task_process(task, path='pipelines'):
     batch = task['batch']
     pids = task['pid']
     pred = []
     for pid in pids:
-        ppath = path + f"\\{pid}"
+        ppath = path + f"/{pid}"
         with open(ppath,'rb') as f:
             p_info = f.read()
         pipeline_info = pickle.loads(p_info)

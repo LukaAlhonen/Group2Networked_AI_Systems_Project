@@ -199,7 +199,7 @@ def fit_kn_pipeline(path: str) -> None:
 
     pipeline_info = Pipeline_info(pipeline_id, pattern, pipeline.named_steps["estimator"].best_score_, pipeline.named_steps["estimator"].best_params_, pipeline)
     filename = f'kn_{pipeline_id}.pkl'
-    with open(f'E:\\Group2Networked_AI_Systems_Project\\pipelines\\{filename}','wb') as file:
+    with open(f'pipelines\\{filename}','wb') as file:
         pickle.dump(pipeline_info, file)
 
 def rf_pipeline() -> Pipeline:
@@ -235,7 +235,7 @@ def fit_rf_pipeline(path: str) -> None:
 
     pipeline_info = Pipeline_info(pipeline_id, pattern, pipeline.named_steps["estimator"].best_score_, pipeline.named_steps["estimator"].best_params_, pipeline)
     filename = f'rf_{pipeline_id}.pkl'
-    with open(f'E:\\Group2Networked_AI_Systems_Project\\pipelines\\{filename}','wb') as file:
+    with open(f'pipelines\\{filename}','wb') as file:
         pickle.dump(pipeline_info, file)
 
 def ridge_pipeline() -> Pipeline:
@@ -272,7 +272,7 @@ def fit_ridge_pipeline(path: str) -> None:
 
     pipeline_info = Pipeline_info(pipeline_id, pattern, pipeline.named_steps["estimator"].best_score_, pipeline.named_steps["estimator"].best_params_, pipeline)
     filename = f'ridge_{pipeline_id}.pkl'
-    with open(f'E:\\Group2Networked_AI_Systems_Project\\pipelines\\{filename}','wb') as file:
+    with open(f'pipelines\\{filename}','wb') as file:
         pickle.dump(pipeline_info, file)
 
 def gb_pipeline() -> Pipeline:
@@ -308,7 +308,7 @@ def fit_gb_pipeline(path: str) -> None:
 
     pipeline_info = Pipeline_info(pipeline_id, pattern, pipeline.named_steps["estimator"].best_score_, pipeline.named_steps["estimator"].best_params_, pipeline)
     filename = f'gb_{pipeline_id}.pkl'
-    with open(f'E:\\Group2Networked_AI_Systems_Project\\pipelines\\{filename}','wb') as file:
+    with open(f'pipelines\\{filename}','wb') as file:
         pickle.dump(pipeline_info, file)
 '''
 def load_pipeline(path: str):

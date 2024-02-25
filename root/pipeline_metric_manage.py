@@ -10,7 +10,7 @@ import sqlite3
 import pandas as pd
 
 # Replace this with the db in your own path
-p = 'E:\\Group2Networked_AI_Systems_Project\\root\\metric.db' 
+p = 'metric.db'
 
 def retrieve_table_name(path=p):
     conn = sqlite3.connect(path)  # Replace 'your_database_name' with your actual database name
