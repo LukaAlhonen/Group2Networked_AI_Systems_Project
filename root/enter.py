@@ -44,7 +44,9 @@ if __name__ == "__main__":
     # Socket Programming part - Transfer serialized_data from Root to Worker
 
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.bind(('localhost', 8001))
+    address = '192.168.1.36' # Replace with root IP
+    port = 8001
+    s.bind((address, port))
     s.listen(5)
 
     c, addr = s.accept()

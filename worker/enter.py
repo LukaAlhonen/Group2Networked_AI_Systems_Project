@@ -15,7 +15,9 @@ if __name__ == "__main__":
     #   ....
     #   serialized_data = Socket.receive()
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect(('localhost', 8001))
+    address = '192.168.1.36' # Replace with root IP
+    port = 8001
+    s.connect((address, port))
     chunks = []
     while True:
         chunk = s.recv(1024)
