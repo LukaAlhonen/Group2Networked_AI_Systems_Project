@@ -15,7 +15,7 @@ if __name__ == "__main__":
     #   ....
     #   serialized_data = Socket.receive()
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    address = '192.168.1.36' # Replace with root IP
+    address = 'localhost' # Replace with root IP
     port = 8001
     s.connect((address, port))
     chunks = []
@@ -30,9 +30,20 @@ if __name__ == "__main__":
     # with open("E:\\Group2Networked_AI_Systems_Project\\worker\\data.pkl", "rb") as f:
     #     serialized_data = f.read()
     deserialized_data = pickle.loads(serialized_data)
-    print(deserialized_data)
+    #print(deserialized_data)
     pred, batch = task_process(deserialized_data)
     metrics = task_analysis(pred, batch)
     metrics['task id'] = deserialized_data['task id']
-    
+    for a in pred:
+        t_s = 0
+        f_s = 0
+        for elem in a:
+            if elem: t_s += 1
+            else: f_s += 1
+        print(f'True: {t_s}')
+        print(f'False: {f_s}')
+    print("<-------------------------------------------->")
+    print(metrics)
+    print("<-------------------------------------------->")
+    print(pred)
     # 

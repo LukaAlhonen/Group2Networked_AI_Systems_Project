@@ -49,6 +49,7 @@ Description of .parquet file:
 23. label_tactic
 """
 
+import warnings
 import pandas as pd
 import numpy as np
 from itertools import chain
@@ -77,7 +78,10 @@ class Pipeline_info:
 
 # Duration --- Impute & 0-indicator, log10, MinMaxScaler
 def get_lg10_for_duration(x):
-    res = np.log10(x)
+    with warnings.catch_warnings():
+        warnings.filterwarnings('ignore', 'divide by zero encountered in log10')
+        res = np.log10(x)
+    #res = np.log10(x)
     res[np.isinf(res)] = -7
     return res
 
