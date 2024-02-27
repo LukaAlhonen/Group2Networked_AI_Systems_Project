@@ -2,6 +2,7 @@
 This is the enter point for the root cluster
 """
 import sys
+import os
 from schedule import schedule, task_creation
 import tkinter as tk
 import pandas as pd
@@ -11,10 +12,13 @@ if __name__ == "__main__":
     # Path of test file should be transferred by arguments in sys.argv
 
     args = sys.argv
-    if len(args) != 2:
+    if 'batch_path' in os.environ:
+        path = os.environ['batch_path']
+    elif len(args) == 2:
+        path = args[1]
+    else:
         raise ValueError("Please provide 1 absolute path of the batch!")
     
-    path = args[1]
     df = pd.read_parquet(path)
 
     pids = schedule(df)
@@ -44,13 +48,13 @@ if __name__ == "__main__":
     # Socket Programming part - Transfer serialized_data from Root to Worker
 
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    address = '192.168.1.36' # Replace with root IP
+    address = 'localhost' # Replace with root IP
     port = 8001
-    s.bind((address, port))
-    s.listen(5)
-
-    c, addr = s.accept()
-    print(f'Connected to {addr}')
-    c.send(serialized_data)
-    c.close()
+    s.connect((address, port))
+    print(f'Connected to {address}:{port}')
+    print('Sending serilazied data...')
+    s.send(serialized_data)
+    print('Done.')
+    s.close()
+    
     

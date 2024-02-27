@@ -1,1 +1,4 @@
 .venv/
+.tar/
+.tar.xz/
+.tar.gz/
