@@ -13,11 +13,7 @@ from pipeline import Pipeline_info, get_lg10_for_duration, minmax_scaling_for_mi
 
 if __name__ == "__main__":
     # Socket Programming part, receive serialized_data from Root
-    #   ....
-    #   serialized_data = Socket.receive()
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    #address = os.environ['address'] # Replace with root IP
-    #port = int(os.environ['port'])
     try:
         if 'address' not in os.environ and 'port' not in os.environ:
             print('No address or port specified, binding to "localhost:8001"')
@@ -28,9 +24,12 @@ if __name__ == "__main__":
             port = int(os.environ['port'])
     except ValueError as e:
         print(f'Invalid port: {e}')
+    
     s.bind((address, port))
     s.listen(1)
     print('Listening...')
+
+    # Receive batch from root
     try:
         while True:
             c, addr = s.accept()
@@ -38,7 +37,6 @@ if __name__ == "__main__":
             chunks = b''
             i = 0
             while True:
-                # print(f'Chunk: {i}')
                 chunk = c.recv(1024)
                 if not chunk:
                     break
@@ -46,11 +44,7 @@ if __name__ == "__main__":
                 i += 1
             print(f'Received {i} chunks')
             serialized_data = chunks
-
-            # with open("E:\\Group2Networked_AI_Systems_Project\\worker\\data.pkl", "rb") as f:
-            #     serialized_data = f.read()
             deserialized_data = pickle.loads(serialized_data)
-            #print(deserialized_data)
             pred, batch = task_process(deserialized_data)
             metrics = task_analysis(pred, batch)
             metrics['task id'] = deserialized_data['task id']
@@ -60,32 +54,12 @@ if __name__ == "__main__":
             print("<-------------------------------------------->")
             print(pred)
             print("<-------------------------------------------->")
+
+            # Get indexes of rows containing anomalies and send back to root
             anomalies = raise_alarm(pred=pred, thres=0.5)
-            print(anomalies)
             print('Sending anomaly indexes...')
             c.send(pickle.dumps(anomalies))
             print('Done.')
             c.close()
     except KeyboardInterrupt:
         s.close()
-
-    # with open("E:\\Group2Networked_AI_Systems_Project\\worker\\data.pkl", "rb") as f:
-    #     serialized_data = f.read()
-    # deserialized_data = pickle.loads(serialized_data)
-    #print(deserialized_data)
-    # pred, batch = task_process(deserialized_data)
-    # metrics = task_analysis(pred, batch)
-    # metrics['task id'] = deserialized_data['task id']
-    # for a in pred:
-    #     t_s = 0
-    #     f_s = 0
-    #     for elem in a:
-    #         if elem: t_s += 1
-    #         else: f_s += 1
-    #     print(f'True: {t_s}')
-    #     print(f'False: {f_s}')
-    # print("<-------------------------------------------->")
-    # print(metrics)
-    # print("<-------------------------------------------->")
-    # print(pred)
-    # 
