@@ -19,6 +19,12 @@ def task_process(task, path='pipelines'):
         pred.append(pred_pid)
     return pred, batch
 
+def raise_alarm(pred, thres: float):
+    pred_df = pd.DataFrame(pred).astype(int)
+    column_avg = pred_df.mean()
+    anomaly_idx = column_avg[column_avg.values > thres].index
+    return anomaly_idx
+
 def task_analysis(pred, batch):
     # Result consists: 
     l = len(pred)

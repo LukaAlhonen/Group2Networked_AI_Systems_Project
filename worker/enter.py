@@ -5,7 +5,7 @@ Enter point for the worker.
 import pickle
 import socket
 import os
-from task import task_process, task_analysis
+from task import task_process, task_analysis, raise_alarm
 from pipeline import Pipeline
 from pipeline import Pipeline_info, get_lg10_for_duration, minmax_scaling_for_missing_bytes, \
                         bool_to_numeric, preprocessing_pipeline, transform_target, kn_pipeline,\
@@ -29,18 +29,23 @@ if __name__ == "__main__":
     except ValueError as e:
         print(f'Invalid port: {e}')
     s.bind((address, port))
-    s.listen(5)
+    s.listen(1)
     print('Listening...')
     try:
         while True:
             c, addr = s.accept()
-            chunks = []
+            print('Received batch.')
+            chunks = b''
+            i = 0
             while True:
+                # print(f'Chunk: {i}')
                 chunk = c.recv(1024)
                 if not chunk:
                     break
-                chunks.append(chunk)
-            serialized_data = b''.join(chunks)
+                chunks += chunk
+                i += 1
+            print(f'Received {i} chunks')
+            serialized_data = chunks
 
             # with open("E:\\Group2Networked_AI_Systems_Project\\worker\\data.pkl", "rb") as f:
             #     serialized_data = f.read()
@@ -49,24 +54,17 @@ if __name__ == "__main__":
             pred, batch = task_process(deserialized_data)
             metrics = task_analysis(pred, batch)
             metrics['task id'] = deserialized_data['task id']
-            for a in pred:
-                t_s = 0
-                f_s = 0
-                for elem in a:
-                    if elem: t_s += 1
-                    else: f_s += 1
-                print(f'True: {t_s}')
-                print(f'False: {f_s}')
             
-            print(batch)
             print("<-------------------------------------------->")
             print(metrics)
             print("<-------------------------------------------->")
             print(pred)
             print("<-------------------------------------------->")
-            if metrics['divergence_rate'] > 0.02:
-                print('Alarm raised!')
-
+            anomalies = raise_alarm(pred=pred, thres=0.5)
+            print(anomalies)
+            print('Sending anomaly indexes...')
+            c.send(pickle.dumps(anomalies))
+            print('Done.')
             c.close()
     except KeyboardInterrupt:
         s.close()
