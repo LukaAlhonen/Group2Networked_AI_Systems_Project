@@ -82,6 +82,8 @@ def send_job(job, worker: Worker) -> any:
         response = json.loads(chunks.decode())
         worker.is_busy = False
         if response['type'] == 'job':
+            if response['result'] == None:
+                return None
             serialised_response = base64.b64decode(response['result'])
             deserialised_data = pickle.loads(serialised_response)
             return deserialised_data

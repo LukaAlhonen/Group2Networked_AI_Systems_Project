@@ -1,0 +1,9 @@
+version: '3'
+services:
+  cluster-root:
+    image: lukaalhonen/cluster-root
+    environment:
+      -ROOT_PORT=${ROOT_PORT}
+    ports:
+      - "${ROOT_PORT}:${ROOT_PORT}"
+    command: python -u enter.py
