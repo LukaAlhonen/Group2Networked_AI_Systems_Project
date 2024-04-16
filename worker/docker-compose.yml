@@ -1,0 +1,12 @@
+version: '3'
+services:
+  cluster-worker:
+    image: lukaalhonen/cluster-worker:1.1
+    environment:
+      ROOT_ADDRESS: ${ROOT_ADDRESS}
+      ROOT_PORT: ${ROOT_PORT}
+      WORKER_PORT: ${WORKER_PORT}
+    ports:
+      - "${ROOT_PORT}:${ROOT_PORT}"
+      - "${WORKER_PORT}:${WORKER_PORT}"
+    command: python -u enter.py

@@ -1,7 +1,7 @@
 version: '3'
 services:
   cluster-root:
-    image: lukaalhonen/cluster-root
+    image: lukaalhonen/cluster-root:1.0
     environment:
       ROOT_PORT: ${ROOT_PORT}
     ports:
