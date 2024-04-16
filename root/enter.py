@@ -117,13 +117,22 @@ def handle_worker_register(worker_address: str, worker_port: int) -> bool:
     isregistered = False
     new_worker = Worker(worker_address, int(worker_port))
     success = False
+    is_local = None
+    try:
+        is_local = bool(sys.argv[1])
+    except:
+        is_local = False
     global workers
     with lock:
-        if len(workers) > 0:
-            for worker in workers:
-                if worker.address == worker_address:
-                    isregistered = True
-        if not isregistered:
+        if not is_local:
+            if len(workers) > 0:
+                for worker in workers:
+                    if worker.address == worker_address:
+                        isregistered = True
+            if not isregistered:
+                workers.append(new_worker)
+                success = True
+        else:
             workers.append(new_worker)
             success = True
 
@@ -195,7 +204,7 @@ if __name__ == "__main__":
                     for idx in result:
                         pprint(df.iloc[idx].to_dict())
                     print('Done.')
-            time.sleep(10)
+            time.sleep(1)
 
 
     except KeyboardInterrupt:

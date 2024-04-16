@@ -1,4 +1,4 @@
-#Group 2 Project Repository
+# Group 2 Project Repository
 
 Structure of the project:
 1. Data_sets: contains training data (parquet format). To load the training set, use ```pd.read_parquet({path}, engine='pyarrow')``` function.
@@ -21,3 +21,42 @@ Structure of the project:
     - enter.py: the entry of the worker node. To activate the worker, run ```python enter.py``` to load the file sent from the root. It calls methods in ```task.py``` to process and analyze the incoming batches.
     - pipeline.py: collections of methods used in training and encapsulating the pipelines. Not involved in deployment phase.
     - task.py: collection of methods used for detecting anomalies in the incoming batches.
+
+## Usage
+
+### Requirements
+
+- docker
+- docker-compose
+
+To run a cluster first clone the repository
+
+```git clone https://github.com/LukaAlhonen/Group2Networked_AI_Systems_Project.git```
+
+#### Root
+
+```cd Group2Networked_AI_Systems_Project/root```
+
+```export ROOT_PORT=<port for root>```
+
+```docker-compose up```
+
+or
+
+```sudo -E docker-compose up```
+
+#### Worker
+
+```cd Group2Networked_AI_Systems_Project/worker```
+
+```export ROOT_ADDRESS=<ip address of root machine>```
+
+```export ROOT_PORT=<port for root>```
+
+```export WORKER_PORT=<port for worker>```
+
+```docker-compose up```
+
+or
+
+```sudo -E docker-compose up```
