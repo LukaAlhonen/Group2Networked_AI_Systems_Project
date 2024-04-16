@@ -176,7 +176,7 @@ if __name__ == "__main__":
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.bind(('', port))
         s.listen(1)
-        print(f'Socket is listening on port: {port}')
+        print(f'Listening on port: {port}')
         stop_event = threading.Event()
         listen_thread = threading.Thread(target=listen_for_registration, args=(s,stop_event))
         listen_thread.start()
