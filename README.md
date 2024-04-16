@@ -43,7 +43,9 @@ To run a cluster first clone the repository
 
 or
 
-```sudo -E docker-compose up```
+```python enter.py```
+
+If running locally set --local flag
 
 #### Worker
 
@@ -59,4 +61,4 @@ or
 
 or
 
-```sudo -E docker-compose up```
+```python enter.py```

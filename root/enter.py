@@ -117,11 +117,9 @@ def handle_worker_register(worker_address: str, worker_port: int) -> bool:
     isregistered = False
     new_worker = Worker(worker_address, int(worker_port))
     success = False
-    is_local = None
-    try:
-        is_local = bool(sys.argv[1])
-    except:
-        is_local = False
+    is_local = False
+    if len(sys.argv) > 1 and sys.argv[1] == '--local':
+        is_local = True
     global workers
     with lock:
         if not is_local:
