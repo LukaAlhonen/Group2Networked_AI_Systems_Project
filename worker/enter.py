@@ -99,6 +99,7 @@ if __name__ == "__main__":
                     c.close()
                 except KeyError:
                     print('Malformed traffic set')
+                    c.send(json.dumps({'type': 'job', 'result': None}).encode())
                     c.close()
                     continue
     except KeyboardInterrupt:
